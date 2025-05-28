@@ -54,7 +54,6 @@ public class CalendarsController {
     List<PlanEntity> plans = planRepository.findByDateBetween(todaysDate, todaysDate.plusDays(6));
 
     String[] wdays = {"(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)"};
-
     for (int x = 0; x < 7; x++) {
       Map<String, Object> dayMap = new HashMap<>();
       LocalDate currentDate = todaysDate.plusDays(x);
@@ -65,10 +64,12 @@ public class CalendarsController {
               todayPlans.add(plan.getPlan());
           }
       }
+      int indexInWdays = (todaysDate.getDayOfWeek().getValue() + x) % 7;
 
       dayMap.put("month", currentDate.getMonthValue());
       dayMap.put("date", currentDate.getDayOfMonth());
       dayMap.put("plans", todayPlans);
+      dayMap.put("wday", wdays[indexInWdays]);
 
       weekDays.add(dayMap);
     }
